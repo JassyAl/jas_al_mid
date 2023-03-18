@@ -21,7 +21,7 @@
                 echo json_encode(["message" => 'author_id Not Found']);
                 exit;
             }
-            //fetch and create array
+            // fetch and create array
             $auth_id = $res->fetch(PDO::FETCH_ASSOC);
             echo json_encode($auth_id);
         }

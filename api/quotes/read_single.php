@@ -14,35 +14,39 @@
             // no data found
             if($results->rowCount() == 0){
                 // display message
-                echo json_encode(["message" => 'No Quotes Found']);
+                $emptyRows = (["message" => 'No Quotes Found']);
+                echo json_encode($emptyRows);
                 exit;
             }else {
                 // quotes array
-                $quote_arr = array();
+                $quotes_array = array();
                 // set rows to results returned
                 while($row = $results->fetch(PDO::FETCH_ASSOC)) {
-                    //if no rows returned, there are no quotes, return message
-                    if (!$row) {
-                        echo json_encode(["message" => 'No Quotes Found']);
-                        exit;
-                    }
-                    // begin row count if quote is found
-                    if($results->rowCount() == 1){
-                        $quote_arr = [
-                            'id' => $row['id'],
-                            'quote' => $row['quote'],
-                            'author' => $row['author'],
-                            'category' => $row['category']
-                        ];
-                    // push to array      
-                    }else{                 
-                        array_push($quote_arr, ['id'=>$id, 'quote'=>$quote,
-                        'author'=>$author, 'category'=>$category]);
-                    }
-                }
+                    // assign values to variables
+                    $id = $row['id'];
+                    $quote = $row['quote'];
+                    $author = $row['author'];
+                    $category = $row['category'];
+                    
+                    // create quote array
+                    $quote = [
+                        'id'=>$id,
+                        'quote'=>$quote, 
+                        'author'=>$author, 
+                        'category'=>$category
+                    ];
+                    
+                    // add quote to quotes_array
+                    array_push($quotes_array, $quote);
+               // push to array      
+}                  
+    array_push($quotes_array, ['id'=>$id, 'quote'=>$quote,
+                     'author'=>$author, 'category'=>$category]);
+
+
           
                 // Convert to JSON 
-                echo json_encode($quote_arr);
+                echo json_encode($quotes_array);
             }
 
             
