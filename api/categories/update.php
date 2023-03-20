@@ -21,8 +21,9 @@
                 echo json_encode(["message" => 'category_id Not Found']);
                 exit;
             }
-            //fetch and create array
+            // fetch and makee array
             $cat_id = $res->fetch(PDO::FETCH_ASSOC);
+            // return array
             echo json_encode($cat_id);
         }
     }

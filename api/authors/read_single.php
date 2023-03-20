@@ -8,10 +8,11 @@ include_once '../../models/Author.php';
 
         }
         public function request_One($method, $id){
-            $auth_message = ["message" => 'author_id Not Found'];  
+            // $auth_message = ["message" => 'author_id Not Found'];  
             // if author exists
             if($id == ''){
-                echo json_encode($auth_message);
+                // echo json_encode($auth_message);
+                echo json_encode(["message" => 'author_id Not Found']);
                 exit;
             }
             // author query
