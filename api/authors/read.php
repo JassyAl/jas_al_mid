@@ -12,11 +12,10 @@
             // if there is data
             if($num > 0){
                 // create array with data
-                $auth_array = array();
+                // $auth_array = array();
                 
                 while($row = $res->fetch(PDO::FETCH_ASSOC)) {
-                    extract($row);
-                    array_push($auth_array, ['id' => $id, 'author' => $author]);
+                    $auth_array[] = ['id' => $row['id'], 'author' => $row['author']];
                 }
                 // convert to json
                 echo json_encode($auth_array);

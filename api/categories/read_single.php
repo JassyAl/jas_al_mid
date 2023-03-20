@@ -9,13 +9,13 @@ include_once '../../models/Category.php';
         }
         public function request_One($method, $id){
             // if category exists
-            if($id == ""){
+            if($id == ''){
                 echo json_encode(["message" => 'category_id Not Found']);
                 exit;
             }
             // category query
             $res = $this->cat->read_single($id);
-            // if cats return row count
+            // if category return row count
             if($res->rowCount() == 0){
                 echo json_encode(["message" => 'category_id Not Found']);
                 exit;
