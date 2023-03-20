@@ -34,27 +34,26 @@
                 $id = ' WHERE q.id = ' . $_GET['id'] . ') as quotes';                
                 $requests = new Read_Single($quotes);
                 $requests->request_One($method, $id);
+
             }elseif(isset($_GET['author_id'])) { 
-                $id = ' WHERE q.author_id = ' . $_GET['author_id'] . ') as quotes
-                ORDER BY id';                              
+                $id = ' WHERE q.author_id = ' . $_GET['author_id'] . 
+                ') as quotes ORDER BY id';                              
                 $requests = new Read_Single($quotes);
                 $requests->request_One($method, $id);
-            }elseif(isset($_GET['category_id']) && isset($_GET['random'])){
-                $id = ' WHERE q.category_id = ' . $_GET['category_id'] . 
-                ') as quotes ORDER BY RANDOM() LIMIT 1';
-                $requests = new Read_Single($quotes);
-                $requests->request_One($method, $id);
-                // cateogry_id
+                
+                // category_id
             }elseif(isset($_GET['category_id'])){ 
-                $id = ' WHERE q.category_id = ' . $_GET['category_id'] . ') as quotes
-                ORDER BY id';                             
+                $id = ' WHERE q.category_id = ' . $_GET['category_id'] . 
+                ') as quotes ORDER BY id';                             
                 $requests = new Read_Single($quotes);
                 $requests->request_One($method, $id);
+
             }elseif(isset($_GET['random'])){
                 $id = ') as quotes ORDER BY RANDOM() LIMIT 1';
                 $requests = new Read_Single($quotes);
                 $requests->request_One($method, $id);
-                // else read all
+
+            // else read all
             }else{  
                 $requests = new Read($quotes);
                 $requests->every_Quote($method);
