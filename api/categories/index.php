@@ -19,12 +19,12 @@
         exit();
     }
     
-    //Instantiate DB & connect
+    // Instantiate DB & connect
     $database = new Database();
-    //Instantiate Category obj
+    // Instantiate Category obj
     $cat = new Category($database);
     
-    //switch for methods
+    // switch for methods
     switch ($method){
         case "GET":   
             if(isset($_GET['id']) ){
@@ -38,21 +38,29 @@
                 $requests ->every_Cat($method);
             }
             break;
+
+        // POST METHOD
         case "POST":  
             $data = (array) json_decode(file_get_contents("php://input"));
             $requests = new Create($cat);
             $requests->create($data);
             break;
+
+        // PUT METHOD
         case "PUT":   
             $data = (array) json_decode(file_get_contents("php://input"));
             $requests  = new Update($cat);
             $requests ->update($data);
             break;
+
+        // DELETE METHOD
         case "DELETE":  
             $data = (array) json_decode(file_get_contents("php://input"));
             $requests  = new Delete($cat);
             $requests ->delete($data);            
             break;
+        
+        // DEFAULT METHOD
         default:  
             $requests  = new Read($cat);
             $requests ->every_Cat($method);

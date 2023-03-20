@@ -6,22 +6,23 @@
         public function __construct(private Author $auth){
         }
         public function every_Auth($method){
-            $results = $this->auth->read();
+            $res = $this->auth->read();
             // number of rows
-            $num = $results->rowCount();
+            $num = $res->rowCount();
             // if there is data
             if($num > 0){
                 // create array with data
-                // $author_arr = array();
+                $auth_array = array();
                 
-                while($row = $results->fetch(PDO::FETCH_ASSOC)) {
-                    $author_arr[] = ['id' => $row['id'], 'author' => $row['author']];
+                while($row = $res->fetch(PDO::FETCH_ASSOC)) {
+                    extract($row);
+                    array_push($auth_array, ['id' => $id, 'author' => $author]);
                 }
-                // Turn to JSON & output
-                echo json_encode($author_arr);
+                // convert to json
+                echo json_encode($auth_array);
           
             } else {
-                    // No Authors
+                    // author not found
                     echo json_encode(array('message' => 'No Authors Found'));
                 }
             }

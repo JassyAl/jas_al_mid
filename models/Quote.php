@@ -30,10 +30,10 @@
         }
 
         public function read(){
-            // GET all  
-            $returnAll = $this->joinQuery . ' ORDER BY q.id';
-            $stmt = $this->conn->prepare($returnAll);
-            // execute query 
+            // GET all  quotes
+            $getAll = $this->joinQuery . ' ORDER BY q.id';
+            $stmt = $this->conn->prepare($getAll);
+            // query 
             try {
                 $stmt->execute();
                 return $stmt;
@@ -45,12 +45,12 @@
         }
         
         public function read_single($id){
-            //for get single request 
+            // get single quote
             $querySingle = 'SELECT * FROM (' . $this->joinQuery . $id;
             
             $stmt = $this->conn->prepare($querySingle);
 
-            //execute query 
+            // query 
             try {
                 $stmt->execute();
                 return $stmt;
@@ -60,6 +60,7 @@
             }
 
         }
+        
 
         public function create($data) {
             // create quotes with aall fields
@@ -73,36 +74,34 @@
 
             $stmt = $this->conn->prepare($createQuery);
 
-            //bind data
+            // bind values
             $stmt->bindValue(":quote", $data["quote"], PDO::PARAM_STR);
             $stmt->bindValue(":author_id", $data["author_id"], PDO::PARAM_INT);
             $stmt->bindValue(":category_id", $data["category_id"], PDO::PARAM_INT);
             
-
             // Try to execute 
             try {
-                if($stmt->execute()){
+                if ($stmt->execute()) {
                     return $stmt;
-                    
                 }
-            }catch(PDOException $e){
-                
-                if($e->getCode()==='2550') {
+            } catch (PDOException $e) {
+                $errorInfo = $e->errorInfo;
+                if ($errorInfo[0] === '23503') {
                     $str = $e->getMessage();
                     $catOrder = '/category_id/';
                     $authOrder = '/author_id/';
-                    if(preg_match($catOrder, $str)){
+                    if (preg_match($catOrder, $str)) {
                         // category err
                         return 1;
-                    }
-                    else{
+                    } else {
                         // author_id 
                         return 2;
                     }
                 }
-                
             }
+
         }
+
         public function update($data){
             //for PUT - update
             $updateQuery = 'UPDATE 
@@ -113,13 +112,13 @@
             WHERE id = :id RETURNING id, quote, author_id, category_id';
 
             $stmt = $this->conn->prepare($updateQuery);
-            //bind values
+            // bind values
             $stmt->bindValue(":quote", $data["quote"], PDO::PARAM_STR);
             $stmt->bindValue(":author_id", $data["author_id"], PDO::PARAM_INT);
             $stmt->bindValue(":category_id", $data["category_id"], PDO::PARAM_INT);
             $stmt->bindValue(":id", $data["id"], PDO::PARAM_INT);
 
-            // try query
+            // query
             try{                
                 if($stmt->execute()){
                     if($stmt->rowCount() === 0){
@@ -129,7 +128,7 @@
                 }
             }catch(PDOException $e){
                 // search key violation
-                if($e->getCode()==='2550') {
+                if($e->getCode()==='23503') {
                     $str = $e->getMessage();
                     
                     $catOrder = '/category_id/';

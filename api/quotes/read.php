@@ -21,6 +21,7 @@
 
           // Iterate over the results
           while($row = $results->fetch(PDO::FETCH_ASSOC)) {
+            extract($row);
               // Add the row's data to the array
               array_push($quotes_arr, [
                   'id' => $row['id'],

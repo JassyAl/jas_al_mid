@@ -9,32 +9,35 @@
 
         public function update($data){
             // query parameters
-            $required_params = ['id', 'category_id', 'author_id'];
-            // check parameters
-            foreach ($required_params as $param) {
-                if (!array_key_exists($param, $data) || $data[$param] === '') {
-                    echo json_encode(["message" => 'Missing Required Parameters']);
-                    exit;
-                }
+            if(!array_key_exists('id', $data) || $data['id']=='' ||
+             !array_key_exists('category_id', $data) || $data['category_id']=='' ||
+             !array_key_exists('author_id', $data) || $data['author_id']==''){
+                echo json_encode(["message" => 'Missing Required Parameters']);
+                exit;
             }
             // results of query
-            $results = $this->quotes->update($data);
+            $res = $this->quotes->update($data);
+
             // if category id does not exist
-            if($results == 1){
+            if($res == 1){
                 echo json_encode(["message" => 'category_id Not Found']);
+                
             // if author id does not exist
-            }else if($results == 2){
+            }else if($res == 2){
                 echo json_encode(["message" => 'author_id Not Found']);
             }
+
             // if quotes do not exist
-            else if(!$results){
+            else if(!$res){
                 echo json_encode(["message" => 'No Quotes Found']);
-            // return  quotes   
-            }else if($results){
-                $quote_id = $results->fetch(PDO::FETCH_ASSOC);
+            
+                // return  quotes   
+            }else if($res){
+                $quote_id = $res->fetch(PDO::FETCH_ASSOC);
                 $quote_obj= json_encode($quote_id);
                 echo $quote_obj;
             }
+            
             // missing required parameters
             else{
                 echo json_encode(["message" => 'Missing Required Parameters']);

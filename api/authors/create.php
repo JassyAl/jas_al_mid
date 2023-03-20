@@ -14,9 +14,9 @@
         // create auth function
         public function create($data){
            // parameter input check
-            if(empty($data['author'])) {
-                echo json_encode(["message" => 'Missing Required Parameters']);
-                exit;
+           if(!array_key_exists('author', $data) || $data['author']==""){
+            echo json_encode(["message" => 'Missing Required Parameters']);
+            exit;
             }            
             // results
             $res = $this->auth->create($data);

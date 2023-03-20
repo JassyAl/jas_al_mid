@@ -39,21 +39,29 @@
                 $requests ->every_Auth($method);
             }
             break;
+
+        // POST METHOD
         case "POST":  
             $data = (array) json_decode(file_get_contents("php://input"));
             $requests = new Create($auth);
             $requests->create($data);
             break;
+
+        // PUT METHOD
         case "PUT":   
             $data = (array) json_decode(file_get_contents("php://input"));
             $requests  = new Update($auth);
             $requests ->update($data);
             break;
+
+        // DELETE METHOD
         case "DELETE":  
             $data = (array) json_decode(file_get_contents("php://input"));
             $requests  = new Delete($auth);
             $requests ->delete($data);            
             break;
+
+        // DEFAULT METHOD
         default:  
             $requests  = new Read($auth);
             $requests ->every_Auth($method);

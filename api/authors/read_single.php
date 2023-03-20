@@ -8,30 +8,32 @@ include_once '../../models/Author.php';
 
         }
         public function request_One($method, $id){
+            $auth_message = ["message" => 'author_id Not Found'];
+            
             // if author exists
-            if($id == ""){
-                echo json_encode(["message" => 'author_id Not Found']);
+            if($id == ''){
+                echo json_encode($auth_message);
                 exit;
             }
             // author query
-            $results = $this->auth->read_single($id);
-            // if auths return row count
-            if($results->rowCount() == 0){
-                echo json_encode(["message" => 'author_id Not Found']);
+            $res = $this->auth->read_single($id);
+            // if authors return row count
+            if($res->rowCount() == 0){
+                echo json_encode($auth_message);
                 exit;
             }else {
                 // Create auth array
-                $author_arr = array();
+                $auth_array = array();
                 
-                while($row = $results->fetch(PDO::FETCH_ASSOC)) {
+                while($row = $res->fetch(PDO::FETCH_ASSOC)) {
                   extract($row);
-                  $author_arr = array(
+                  $auth_array = array(
                     'id' => $id,
                     'author' => $author              
                   );             
                 }
                 // Convert JSON 
-                echo json_encode($author_arr);
+                echo json_encode($auth_array);
             }
             
         }
