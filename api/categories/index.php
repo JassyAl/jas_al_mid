@@ -1,14 +1,5 @@
 <?php
 
-    include_once '../../config/Database.php';
-    include_once '../../models/Category.php';
-
-    include_once 'create.php';
-    include_once 'delete.php';
-    include_once 'read_single.php';
-    include_once 'read.php';
-    include_once 'update.php';
-
     header('Access-Control-Allow-Origin: *');
     header('Content-Type: application/json');
     $method = $_SERVER['REQUEST_METHOD'];
@@ -18,7 +9,16 @@
         header('Access-Control-Allow-Headers: Origin, Accept, Content-Type, X-Requested-With');
         exit();
     }
-    
+    include_once '../../config/Database.php';
+    include_once '../../models/Category.php';
+
+    include_once 'create.php';
+    include_once 'delete.php';
+    include_once 'read_single.php';
+    include_once 'read.php';
+    include_once 'update.php';
+
+
     // Instantiate DB & connect
     $database = new Database();
     // Instantiate Category obj
