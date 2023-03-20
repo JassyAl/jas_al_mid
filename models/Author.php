@@ -54,12 +54,12 @@
         public function create($data) {
             $createQuery = 'INSERT INTO 
             ' . $this->table . ' 
-                (id, author) 
+            (id, author) 
             VALUES 
-                ((SELECT setval(\'authors_id_seq\', 
-                (SELECT MAX(id) FROM authors)+1)), :author) 
+            ((SELECT setval(\'authors_id_seq\', 
+            (SELECT MAX(id) FROM authors)+1)), :author) 
             RETURNING 
-                id::text, author';
+            id::text, author';
         
             $stmt = $this->conn->query($createQuery);
 
@@ -116,7 +116,7 @@
             $stmt = $this->conn->prepare($deleteQuery);
             // bind
             $stmt->bindValue(":id", $data["id"], PDO::PARAM_INT);
-            //execute
+            // execute
             try {
                 $stmt->execute();
                 if($stmt->rowCount() === 0){

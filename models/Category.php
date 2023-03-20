@@ -113,7 +113,7 @@
             $stmt = $this->conn->prepare($deleteQuery);
             // bind
             $stmt->bindValue(":id", $data["id"], PDO::PARAM_INT);
-            //execute
+            // execute
             try {
                 $stmt->execute();
                 if($stmt->rowCount() === 0){
