@@ -13,7 +13,7 @@
             // if there is data
             if($num > 0){
                 // create array with data
-                $category_arr = array();
+                // $category_arr = array();
                 
                 while($row = $results->fetch(PDO::FETCH_ASSOC)) {
                     $category_arr[] = ['id' => $row['id'], 'category' => $row['category']];

@@ -103,10 +103,15 @@
 
         }
         public function delete($data){
-            $deleteQuery = 'DELETE FROM ' . $this->table . '
-            WHERE id = :id RETURNING id';
-
+            $deleteQuery = 'DELETE FROM ' 
+            . $this->table . '
+            WHERE 
+                id = :id 
+            RETURNING   
+                id';
+            // prepare
             $stmt = $this->conn->prepare($deleteQuery);
+            // bind
             $stmt->bindValue(":id", $data["id"], PDO::PARAM_INT);
             //execute
             try {

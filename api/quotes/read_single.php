@@ -18,7 +18,7 @@ class Read_Single {
             exit;
         } else {
             // quotes array
-            $quotes_array = [];
+            $quotes_array = array();
             // set rows to results returned
             while($row = $res->fetch(PDO::FETCH_ASSOC)) {
                 extract($row);
@@ -40,3 +40,4 @@ class Read_Single {
         }
     }
 }
+
