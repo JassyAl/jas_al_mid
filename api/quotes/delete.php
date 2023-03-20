@@ -6,18 +6,11 @@
         }
         public function delete($data){
             // if key exists 
-            // if(!array_key_exists('id', $data)){
-            //     echo json_encode(["message" => 'Missing Required Parameters']);
-            //     exit;
-            // }
-
-            $req_params = ['id', $data];
-            foreach($req_params as $key) {
-                if(empty($data[$key])) {
-                    echo json_encode(["message" => 'Missing Required Parameters']);
-                    exit;
-                }
+            if(!array_key_exists('id', $data)){
+                echo json_encode(["message" => 'Missing Required Parameters']);
+                exit;
             }
+            
             // get results
             $res = $this->quotes->delete($data);
             // none returned
