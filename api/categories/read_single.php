@@ -8,16 +8,17 @@ include_once '../../models/Category.php';
 
         }
         public function request_One($method, $id){
+            $cat_message = ["message" => 'category_id Not Found'];
             // if category exists
             if($id == ''){
-                echo json_encode(["message" => 'category_id Not Found']);
+                echo json_encode($cat_message);
                 exit;
             }
             // category query
             $res = $this->cat->read_single($id);
             // if category return row count
             if($res->rowCount() == 0){
-                echo json_encode(["message" => 'category_id Not Found']);
+                echo json_encode($cat_message);
                 exit;
             }else {
                 // Create cat array
