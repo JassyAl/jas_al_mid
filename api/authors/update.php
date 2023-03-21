@@ -7,12 +7,10 @@
         }
         public function update($data){
             // parameter check
-            $req_params = ['id', 'author'];
-            foreach($req_params as $key) {
-                if(empty($data[$key])) {
-                    echo json_encode(["message" => 'Missing Required Parameters']);
-                    exit;
-                }
+            if(!array_key_exists('id', $data) || $data['id']=='' ||
+             !array_key_exists('author', $data) || $data['author']==''){
+                echo json_encode(["message" => 'Missing Required Parameters']);
+                exit;
             }
             // get data
             $res = $this->auth->update($data);
@@ -21,7 +19,7 @@
                 echo json_encode(["message" => 'author_id Not Found']);
                 exit;
             }
-            //fetch and create array
+            // fetch and create array
             $auth_id = $res->fetch(PDO::FETCH_ASSOC);
             echo json_encode($auth_id);
         }
