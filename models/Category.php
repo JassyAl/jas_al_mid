@@ -12,15 +12,15 @@
         }
 
         public function read(){
-            //create query for all records
+            // query all 
             $queryAll = 'SELECT 
             * FROM 
             ' . $this->table . ' 
             ORDER BY 
             id';
-            //prepare query
+            //prepare
             $stmt = $this->conn->prepare($queryAll);
-            //execute query
+            // execute
             try {
                 $stmt->execute();
                 return $stmt;
@@ -38,9 +38,9 @@
                 id = :id 
             LIMIT 1';
             $stmt = $this->conn->prepare($querySingle);
-
+            // bind
             $stmt->bindValue(":id", $id, PDO::PARAM_INT);
-
+            // try to query
             try {
                 $stmt->execute();
                 return $stmt;
@@ -63,9 +63,9 @@
 
             $stmt = $this->conn->prepare($createQuery);
 
-            //bind data
+            // bind data
             $stmt->bindValue(":category", $data["category"], PDO::PARAM_STR);
-            //execute 
+            // try to execute
             try {
                 $stmt->execute();
                 return $stmt;
@@ -103,6 +103,7 @@
 
         }
         public function delete($data){
+            // DELETE
             $deleteQuery = 'DELETE FROM ' 
             . $this->table . '
             WHERE 

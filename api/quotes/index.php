@@ -21,9 +21,9 @@
     
  
     
-    // Instatiate DB & connect
+    // Instantiate DB & connect
     $database = new Database();
-    // Instantiate Quote onj
+    // Instantiate Quote obj
     $quotes = new Quote($database);
 
        // GET METHOD

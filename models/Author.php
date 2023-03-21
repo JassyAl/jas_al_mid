@@ -65,7 +65,7 @@
 
             // bind data
             $stmt->bindValue(":author", $data["author"], PDO::PARAM_STR);
-            // try 
+            // try to execute
             try{
                 $stmt->execute();
                 return $stmt;

@@ -37,28 +37,24 @@
             try {
                 $stmt->execute();
                 return $stmt;
-                    
             }catch(PDOException $e){
                 return false;
             }           
-
         }
         
         public function read_single($id){
             // get single quote
-            $querySingle = 'SELECT * FROM (' . $this->joinQuery . $id;
+            $querySingle = 'SELECT * 
+            FROM (' . $this->joinQuery . $id;
             
             $stmt = $this->conn->prepare($querySingle);
-
             // query 
             try {
                 $stmt->execute();
                 return $stmt;
-                    
             }catch(PDOException $e){
                 return false;
             }
-
         }
         
 
