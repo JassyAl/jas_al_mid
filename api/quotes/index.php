@@ -20,72 +20,75 @@
     include_once 'update.php';
     
  
-    
-    // GET METHOD
-    switch ($method){
-        case "GET":
-            // quote id
-            if(isset($_GET['id']) ){ 
-                $id = ' WHERE q.id = ' . $_GET['id'] . ') as quotes';                
-                $requests = new Read_Single($quotes);
-                $requests->request_One($method, $id);
+        // Instantiate DB & connect
+        $database = new Database();
+        // Instantiate Quote obj
+        $quotes = new Quote($database);
+        // GET METHOD
+        switch ($method){
+            case "GET":
+                // quote id
+                if(isset($_GET['id']) ){ 
+                    $id = ' WHERE q.id = ' . $_GET['id'] . ') as quotes';                
+                    $requests = new Read_Single($quotes);
+                    $requests->request_One($method, $id);
 
-            }elseif(isset($_GET['author_id'])) { 
-                $id = ' WHERE q.author_id = ' . $_GET['author_id'] . 
-                ') as quotes ORDER BY id';                              
-                $requests = new Read_Single($quotes);
-                $requests->request_One($method, $id);
+                }elseif(isset($_GET['author_id'])) { 
+                    $id = ' WHERE q.author_id = ' . $_GET['author_id'] . 
+                    ') as quotes ORDER BY id';                              
+                    $requests = new Read_Single($quotes);
+                    $requests->request_One($method, $id);
 
-            // category_id
-            }elseif(isset($_GET['category_id'])){ 
-                $id = ' WHERE q.category_id = ' . $_GET['category_id'] . 
-                ') as quotes ORDER BY id';                             
-                $requests = new Read_Single($quotes);
-                $requests->request_One($method, $id);
+                // category_id
+                }elseif(isset($_GET['category_id'])){ 
+                    $id = ' WHERE q.category_id = ' . $_GET['category_id'] . 
+                    ') as quotes ORDER BY id';                             
+                    $requests = new Read_Single($quotes);
+                    $requests->request_One($method, $id);
 
-            }elseif(isset($_GET['random'])){
-                $id = ') as quotes ORDER BY RANDOM() LIMIT 1';
-                $requests = new Read_Single($quotes);
-                $requests->request_One($method, $id);
+                }elseif(isset($_GET['random'])){
+                    $id = ') as quotes ORDER BY RANDOM() LIMIT 1';
+                    $requests = new Read_Single($quotes);
+                    $requests->request_One($method, $id);
 
-            // else read all
-            }elseif(isset($_GET['authors'])){ // new case for /authors/ endpoint
-                $authors = $quotes->getAuthors(); // get all authors from the database
-                $response = array(); // create an empty array to hold the response data
-                foreach($authors as $author){ // loop through each author and add its id and name to the response array
-                    $response[] = array(
-                        'id' => $author['id'],
-                        'author' => $author['name']
-                    );
+                // else read all
+                }elseif(isset($_GET['authors'])){ // new case for /authors/ endpoint
+                    $authors = $quotes->getAuthors(); // get all authors from the database
+                    $response = array(); // create an empty array to hold the response data
+                    foreach($authors as $author){ // loop through each author and add its id and name to the response array
+                        $response[] = array(
+                            'id' => $author['id'],
+                            'author' => $author['name']
+                        );
+                    }
+                    echo json_encode($response); // encode the response data as JSON and output it
+                    exit(); // terminate the script
+
+                }else{  
+                    $requests = new Read($quotes);
+                    $requests->every_Quote($method);
                 }
-                echo json_encode($response); // encode the response data as JSON and output it
-                exit(); // terminate the script
 
-            }else{  
-                $requests = new Read($quotes);
-                $requests->every_Quote($method);
-            }
+                break; 
 
-            break; 
+            // POST METHOD            
+            case "POST": 
+                $data = (array) json_decode(file_get_contents("php://input"));
+                $requests = new Create($quotes);
+                $requests->create($data);      
+                break;
 
-        // POST METHOD            
-        case "POST": 
-            $data = (array) json_decode(file_get_contents("php://input"));
-            $requests = new Create($quotes);
-            $requests->create($data);      
-            break;
+            // PUT METHOD
+            case "PUT":  
+                $data = (array) json_decode(file_get_contents("php://input"));        
+                $requests = new Update($quotes);
+                $requests->update($data);
+                break;
 
-        // PUT METHOD
-        case "PUT":  
-            $data = (array) json_decode(file_get_contents("php://input"));        
-            $requests = new Update($quotes);
-            $requests->update($data);
-            break;
-
-        // DELETE METHOD
-        case "DELETE":  
-            $data = (array) json_decode(file_get_contents("php://input"));       
-            $requests = new Delete($quotes);
-            $requests->delete($data);
-            break;
-    }
+            // DELETE METHOD
+            case "DELETE":  
+                $data = (array) json_decode(file_get_contents("php://input"));       
+                $requests = new Delete($quotes);
+                $requests->delete($data);
+                break;
+        }
