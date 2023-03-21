@@ -21,15 +21,10 @@
     
  
     
-    // Instantiate DB & connect
-    $database = new Database();
-    // Instantiate Quote obj
-    $quotes = new Quote($database);
-
-       // GET METHOD
-       switch ($method){
-        case "GET": 
-             // quote id
+    // GET METHOD
+    switch ($method){
+        case "GET":
+            // quote id
             if(isset($_GET['id']) ){ 
                 $id = ' WHERE q.id = ' . $_GET['id'] . ') as quotes';                
                 $requests = new Read_Single($quotes);
@@ -40,8 +35,8 @@
                 ') as quotes ORDER BY id';                              
                 $requests = new Read_Single($quotes);
                 $requests->request_One($method, $id);
-                
-                // category_id
+
+            // category_id
             }elseif(isset($_GET['category_id'])){ 
                 $id = ' WHERE q.category_id = ' . $_GET['category_id'] . 
                 ') as quotes ORDER BY id';                             
@@ -54,11 +49,23 @@
                 $requests->request_One($method, $id);
 
             // else read all
+            }elseif(isset($_GET['authors'])){ // new case for /authors/ endpoint
+                $authors = $quotes->getAuthors(); // get all authors from the database
+                $response = array(); // create an empty array to hold the response data
+                foreach($authors as $author){ // loop through each author and add its id and name to the response array
+                    $response[] = array(
+                        'id' => $author['id'],
+                        'author' => $author['name']
+                    );
+                }
+                echo json_encode($response); // encode the response data as JSON and output it
+                exit(); // terminate the script
+
             }else{  
                 $requests = new Read($quotes);
                 $requests->every_Quote($method);
             }
-            
+
             break; 
 
         // POST METHOD            
@@ -73,12 +80,12 @@
             $data = (array) json_decode(file_get_contents("php://input"));        
             $requests = new Update($quotes);
             $requests->update($data);
-        break;
+            break;
 
         // DELETE METHOD
         case "DELETE":  
             $data = (array) json_decode(file_get_contents("php://input"));       
             $requests = new Delete($quotes);
             $requests->delete($data);
-        break;
+            break;
     }
