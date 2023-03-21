@@ -52,7 +52,7 @@
         }
 
         public function create($data) {
-            $createQuery = 'INSERT INTO 
+            $createQuery = ' INSERT INTO 
             ' . $this->table . ' 
             (id, author) 
             VALUES 
@@ -79,14 +79,13 @@
             $updateQuery = 'UPDATE 
             ' . $this->table . '
             SET 
-                author = :author 
+            author = :author 
             WHERE 
-                id = :id 
+            id = :id 
             RETURNING 
-                id, author';
+            id, author';
 
             $stmt = $this->conn->prepare($updateQuery);
-            // bind
             $stmt->bindValue(":author", $data["author"], PDO::PARAM_STR);
             $stmt->bindValue(":id", $data["id"], PDO::PARAM_INT);
 
@@ -106,8 +105,8 @@
 
         public function delete($data){
             // DELETE
-            $deleteQuery = 'DELETE FROM 
-            ' . $this->table . '
+            $deleteQuery = 'DELETE FROM '
+            . $this->table . '
             WHERE 
                 id = :id 
             RETURNING 

@@ -31,7 +31,7 @@
 
         public function read(){
             // GET all  quotes
-            $getAll = $this->joinQuery . ' ORDER BY q.id';
+            $getAll = $this->joinQuery . ' ORDER BY q.id ';
             $stmt = $this->conn->prepare($getAll);
             // query 
             try {
