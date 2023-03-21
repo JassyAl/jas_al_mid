@@ -3,6 +3,7 @@
 
     class Delete{
         public function __construct(private Quote $quotes){
+
         }
         public function delete($data){
             // if key exists 
@@ -10,7 +11,6 @@
                 echo json_encode(["message" => 'Missing Required Parameters']);
                 exit;
             }
-            
             // get results
             $res = $this->quotes->delete($data);
             // none returned
